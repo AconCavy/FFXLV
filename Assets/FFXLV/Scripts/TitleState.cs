@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace FFXLV
 {
@@ -10,6 +9,7 @@ namespace FFXLV
         [SerializeField] private AudioClip loopBGM;
 
         private bool isLoopApplied;
+
         public override void Initialize()
         {
             base.Initialize();
@@ -36,4 +36,3 @@ namespace FFXLV
         }
     }
 }
-

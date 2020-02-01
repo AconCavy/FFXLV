@@ -10,6 +10,7 @@ namespace FFXLV
         [SerializeField] private ActionState actionState;
         [SerializeField] private ResultState resultState;
         public GameState CurrentGameState { get; private set; }
+        private bool skipTutorial;
 
         public void ExitGame()
         {
@@ -19,12 +20,12 @@ namespace FFXLV
         private void Start()
         {
             CurrentGameState = GameState.Title;
+            skipTutorial = false;
         }
 
         private void Update()
         {
             var dt = Time.deltaTime;
-            Debug.Log(CurrentGameState);
             switch (CurrentGameState)
             {
                 case GameState.Title:
@@ -36,10 +37,15 @@ namespace FFXLV
 
                     break;
                 case GameState.Tutorial:
+                    if (skipTutorial)
+                    {
+                        tutorialState.Skip();
+                    }
                     tutorialState.Run(dt);
                     if (tutorialState.IsCompleted)
                     {
                         CurrentGameState = GameState.Action;
+                        skipTutorial = true;
                     }
 
                     break;
