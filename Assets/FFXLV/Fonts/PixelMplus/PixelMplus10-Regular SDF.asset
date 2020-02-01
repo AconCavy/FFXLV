@@ -67,9 +67,9 @@ Material:
     - _OutlineWidth: 0
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
-    - _ScaleRatioA: 1
-    - _ScaleRatioB: 1
-    - _ScaleRatioC: 1
+    - _ScaleRatioA: 0.8333333
+    - _ScaleRatioB: 0.6770833
+    - _ScaleRatioC: 0.6770833
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0
@@ -154,9 +154,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: PixelMplus10-Regular SDF
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: -1555613416
   material: {fileID: -7231053649212157164}
-  materialHashCode: 0
+  materialHashCode: 1666885523
   m_Version: 1.1.0
   m_SourceFontFileGUID: 2519de50d98aee740ad4b0c87dddebcf
   m_SourceFontFile_EditorRef: {fileID: 0}
