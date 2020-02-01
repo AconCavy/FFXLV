@@ -7,6 +7,7 @@ namespace FFXLV
 {
     public class TransformChanger : MonoBehaviour
     {
+        [SerializeField] private float baseDistance = 3;
         [SerializeField] private float bestAngle = 45;
         [SerializeField] private float bestAngleMargin = 5;
         [SerializeField] private float goodAngleMargin = 20;
@@ -29,7 +30,7 @@ namespace FFXLV
 
         public void Initialize(float angularMagnitude, float distanceMagnitude)
         {
-            this.distance = 1;
+            this.distance = this.baseDistance;
             this.coefficient = 1;
             this.angleScoreCalculator =
                 new AngleScoreCalculator(this.bestAngle, this.bestAngleMargin, this.goodAngleMargin, 100, 75, 30);
@@ -65,11 +66,11 @@ namespace FFXLV
                     this.angle += this.AngularMagnitude * Mathf.PI * dt;
                     break;
                 case TransformState.Distance:
-                    if (this.distance < this.minDistance)
+                    if (this.distance < this.minDistance * this.baseDistance)
                     {
                         this.coefficient = 1;
                     }
-                    else if (this.distance > this.maxDistance)
+                    else if (this.distance > this.maxDistance * this.baseDistance)
                     {
                         this.coefficient = -1;
                     }
@@ -88,8 +89,10 @@ namespace FFXLV
                     break;
             }
 
-            transform.localPosition = new Vector3(Mathf.Abs(Mathf.Cos(angle)), Mathf.Abs(Mathf.Sin(angle)))
-                                      * distance;
+            var vector = new Vector3(Mathf.Abs(Mathf.Cos(angle)), Mathf.Abs(Mathf.Sin(angle)));
+
+            transform.localPosition = vector * distance;
+            transform.localRotation = Quaternion.Euler(0, 0, 90 * Vector3.Dot(Vector3.up, vector));
         }
     }
 }
