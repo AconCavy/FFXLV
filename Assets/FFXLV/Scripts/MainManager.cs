@@ -5,6 +5,7 @@ namespace FFXLV
 {
     public class MainManager : MonoBehaviour
     {
+        [SerializeField] private Tutorial tutorial;
         public GameState GameState { get; private set; }
 
         public void NextState()
@@ -24,11 +25,16 @@ namespace FFXLV
         
         private void Update()
         {
+            var dt = Time.deltaTime;
             switch (GameState)
             {
                 case GameState.Title:
                     break;
                 case GameState.Tutorial:
+                    if (tutorial.IsCompleted)
+                    {
+                        NextState();
+                    }
                     break;
                 case GameState.MainGame:
                     break;

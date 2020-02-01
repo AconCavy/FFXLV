@@ -8,17 +8,23 @@ namespace FFXLV
     public class TransformChanger : MonoBehaviour
     {
         [SerializeField] private float baseDistance = 3;
-        [SerializeField] private float bestAngle = 45;
         [SerializeField] private float bestAngleMargin = 5;
         [SerializeField] private float goodAngleMargin = 20;
-        [SerializeField] private float bestDistance = 1;
         [SerializeField] private float bestDistanceMargin = 5;
         [SerializeField] private float goodDistanceMargin = 20;
+        [SerializeField] private AudioClip bestSE;
+        [SerializeField] private AudioClip strongSE;
+        [SerializeField] private AudioClip weakSE;
+        [SerializeField] private AudioSource audioSource;
 
         public float AngularMagnitude { get; private set; } = 0.5f;
         public float DistanceMagnitude { get; private set; } = 0.5f;
         public TransformState CurrentState { get; private set; }
+        public bool IsCompleted { get; private set; }
+        public float Score { get; private set; }
 
+        private float bestAngle;
+        private float bestDistance;
         private float angle;
         private float distance;
         private readonly float minDistance = 0.5f;
@@ -28,14 +34,21 @@ namespace FFXLV
         private AngleScoreCalculator angleScoreCalculator;
         private DistanceScoreCalculator distanceScoreCalculator;
 
-        public void Initialize(float angularMagnitude, float distanceMagnitude)
+        private readonly float bestScore = 100;
+        private readonly float goodScore = 70;
+        private readonly float badScore = 30;
+
+        public void Initialize(float bestAngle, float angularMagnitude, float bestDistance, float distanceMagnitude)
         {
+            this.bestAngle = bestAngle;
+            this.bestDistance = bestDistance;
             this.distance = this.baseDistance;
             this.coefficient = 1;
             this.angleScoreCalculator =
-                new AngleScoreCalculator(this.bestAngle, this.bestAngleMargin, this.goodAngleMargin, 100, 75, 30);
+                new AngleScoreCalculator(this.bestAngle, this.bestAngleMargin, this.goodAngleMargin, this.bestScore,
+                    this.goodScore, this.badScore);
             this.distanceScoreCalculator = new DistanceScoreCalculator(this.bestDistance, this.bestDistanceMargin,
-                this.goodDistanceMargin, 100, 75, 30);
+                this.goodDistanceMargin, this.bestScore, this.goodScore, this.badScore);
             this.AngularMagnitude = angularMagnitude;
             this.DistanceMagnitude = distanceMagnitude;
             this.CurrentState = TransformState.Angle;
@@ -74,6 +87,7 @@ namespace FFXLV
                     {
                         this.coefficient = -1;
                     }
+
                     this.distance += this.coefficient * this.DistanceMagnitude * dt;
                     break;
                 case TransformState.Attack:
@@ -82,10 +96,25 @@ namespace FFXLV
                     {
                         NextState();
                     }
+
                     break;
                 case TransformState.Effect:
-                    // TODO VFX and SFX
-                    NextState();
+                    var tmp = transform.localPosition;
+                    var angleScore = angleScoreCalculator.GetScore(tmp.normalized);
+                    var distanceScore = angleScoreCalculator.GetScore(tmp.magnitude);
+                    var clip = Math.Abs(angleScore - this.bestScore) < 1 ? bestSE :
+                        tmp.magnitude > bestDistance ? strongSE : weakSE;
+                    audioSource.PlayOneShot(clip);
+                    this.Score += angleScore + distanceScore;
+                    if (this.Score >= 200)
+                    {
+                        this.IsCompleted = true;
+                    }
+                    else
+                    {
+                        
+                    }
+
                     break;
             }
 

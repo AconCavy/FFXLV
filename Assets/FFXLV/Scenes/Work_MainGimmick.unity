@@ -214,7 +214,6 @@ GameObject:
   m_Component:
   - component: {fileID: 382593668}
   - component: {fileID: 382593670}
-  - component: {fileID: 382593669}
   m_Layer: 0
   m_Name: Attacker
   m_TagString: Untagged
@@ -229,31 +228,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 382593667}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0.75, y: -1, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
-  m_Father: {fileID: 1485670883}
+  m_Father: {fileID: 2093555539}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &382593669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 382593667}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa9859a56fa0c5c468948d831319b912, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bestAngle: 45
-  bestAngleMargin: 5
-  goodAngleMargin: 20
-  bestDistance: 1
-  bestDistanceMargin: 5
-  goodDistanceMargin: 20
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!212 &382593670
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -293,7 +274,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 295d7937f0538e147b15fe743f025361, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -383,7 +364,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 382593668}
+  - {fileID: 2093555539}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -399,6 +380,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec7e1f83f601e8d4d99a9cfc8afe0717, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformChanger: {fileID: 382593669}
-  angularMagunitude: 0.2
-  distanceMagunitude: 0.4
+  transformChanger: {fileID: 2093555540}
+  angularMagunitude: 1
+  distanceMagunitude: 2
+--- !u!1 &2093555538
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2093555539}
+  - component: {fileID: 2093555540}
+  m_Layer: 0
+  m_Name: Attacker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2093555539
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2093555538}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 382593668}
+  m_Father: {fileID: 1485670883}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2093555540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2093555538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa9859a56fa0c5c468948d831319b912, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDinstance: 3
+  bestAngle: 45
+  bestAngleMargin: 5
+  goodAngleMargin: 20
+  bestDistance: 3
+  bestDistanceMargin: 5
+  goodDistanceMargin: 20

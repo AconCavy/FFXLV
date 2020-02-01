@@ -5,7 +5,9 @@ namespace FFXLV.Sample
     public class SampleTransformStateChanger : MonoBehaviour
     {
         [SerializeField] private TransformChanger transformChanger;
+        [SerializeField] private float bestAngle = 45;
         [SerializeField] private float angularMagunitude = 0.2f;
+        [SerializeField] private float bestDistance = 3;
         [SerializeField] private float distanceMagunitude = 0.4f;
 
         private void Start()
@@ -28,7 +30,7 @@ namespace FFXLV.Sample
 
         public void Initialize()
         {
-            this.transformChanger.Initialize(this.angularMagunitude, this.distanceMagunitude);
+            this.transformChanger.Initialize(bestAngle, this.angularMagunitude, bestDistance, this.distanceMagunitude);
         }
     }
 }
