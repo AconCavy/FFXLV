@@ -216,7 +216,7 @@ GameObject:
   - component: {fileID: 382593670}
   - component: {fileID: 382593669}
   m_Layer: 0
-  m_Name: New Sprite (1)
+  m_Name: Attacker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -248,8 +248,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa9859a56fa0c5c468948d831319b912, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BestMargin: 5
-  GoodMargin: 20
+  bestAngle: 45
+  bestAngleMargin: 5
+  goodAngleMargin: 20
+  bestDistance: 1
+  bestDistanceMargin: 5
+  goodDistanceMargin: 20
 --- !u!212 &382593670
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -310,8 +314,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1485670883}
   - component: {fileID: 1485670882}
+  - component: {fileID: 1485670884}
   m_Layer: 0
-  m_Name: New Sprite
+  m_Name: AttackPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -382,3 +387,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1485670884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1485670881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec7e1f83f601e8d4d99a9cfc8afe0717, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transformChanger: {fileID: 382593669}
+  angularMagunitude: 0.2
+  distanceMagunitude: 0.4
