@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace FFXLV.Enum
+﻿namespace FFXLV.Enum
 {
     public enum TransformState
     {
@@ -10,5 +6,13 @@ namespace FFXLV.Enum
         Angle = 1,
         Distance = 2,
         Attack = 3
+    }
+
+    public enum GameState
+    {
+        None = 0,
+        Tutorial = 1,
+        MainGame = 2,
+        Result = 3
     }
 }
