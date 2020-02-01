@@ -20,6 +20,8 @@ namespace FFXLV
 
         private float angle;
         private float distance;
+        private readonly float minDistance = 0.5f;
+        private readonly float maxDistance = 1.5f;
         private float coefficient;
         private float attackVelocity;
         private AngleScoreCalculator angleScoreCalculator;
@@ -56,31 +58,29 @@ namespace FFXLV
         private void Update()
         {
             var dt = Time.deltaTime;
-            dt = dt > 0.5f ? dt : 0.5f;
+            dt = dt < 0.5f ? dt : 0.5f;
             switch (this.CurrentState)
             {
                 case TransformState.Angle:
                     this.angle += this.AngularMagnitude * Mathf.PI * dt;
                     break;
                 case TransformState.Distance:
-                    if (this.distance < 0)
+                    if (this.distance < this.minDistance)
                     {
                         this.coefficient = 1;
                     }
-                    else if (this.distance > this.DistanceMagnitude)
+                    else if (this.distance > this.maxDistance)
                     {
                         this.coefficient = -1;
                     }
-
                     this.distance += this.coefficient * this.DistanceMagnitude * dt;
                     break;
                 case TransformState.Attack:
-                    distance = distance < 0 ? 0 : distance - attackVelocity * dt;
+                    distance = distance < 0 ? 0 : distance - attackVelocity * dt * 10;
                     if (Math.Abs(distance) < 0.05f)
                     {
                         NextState();
                     }
-
                     break;
                 case TransformState.Effect:
                     // TODO VFX and SFX
