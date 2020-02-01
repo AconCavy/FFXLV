@@ -5,7 +5,8 @@
         None = 0,
         Angle = 1,
         Distance = 2,
-        Attack = 3
+        Attack = 3,
+        Effect = 4
     }
 
     public enum GameState
