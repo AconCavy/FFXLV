@@ -15,6 +15,8 @@ namespace FFXLV
         {
             switch (GameState)
             {
+                case GameState.Title:
+                    break;
                 case GameState.Tutorial:
                     break;
                 case GameState.MainGame:
