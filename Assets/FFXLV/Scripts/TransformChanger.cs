@@ -24,25 +24,27 @@ namespace FFXLV
         private float attackVelocity;
         private AngleScoreCalculator angleScoreCalculator;
         private DistanceScoreCalculator distanceScoreCalculator;
-        
+
         public void Initialize(float angularMagnitude, float distanceMagnitude)
         {
             this.distance = 1;
             this.coefficient = 1;
             this.angleScoreCalculator =
                 new AngleScoreCalculator(this.bestAngle, this.bestAngleMargin, this.goodAngleMargin, 100, 75, 30);
-            this.distanceScoreCalculator = new DistanceScoreCalculator(1, 0.1f, 0.3f, 100, 75, 30);
+            this.distanceScoreCalculator = new DistanceScoreCalculator(this.bestDistance, this.bestDistanceMargin,
+                this.goodDistanceMargin, 100, 75, 30);
             this.AngularMagnitude = angularMagnitude;
             this.DistanceMagnitude = distanceMagnitude;
             this.CurrentState = TransformState.Angle;
         }
-        
+
         public void NextState()
         {
             if (CurrentState.Equals(TransformState.Distance))
             {
                 this.attackVelocity = GetCurrentVector().magnitude;
             }
+
             this.CurrentState = CurrentState.Equals(TransformState.Effect) ? TransformState.None : CurrentState + 1;
         }
 
@@ -69,6 +71,7 @@ namespace FFXLV
                     {
                         this.coefficient = -1;
                     }
+
                     this.distance += this.coefficient * this.DistanceMagnitude * dt;
                     break;
                 case TransformState.Attack:
@@ -77,6 +80,7 @@ namespace FFXLV
                     {
                         NextState();
                     }
+
                     break;
                 case TransformState.Effect:
                     // TODO VFX and SFX
