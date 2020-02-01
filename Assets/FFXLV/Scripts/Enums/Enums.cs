@@ -14,7 +14,7 @@
         None,
         Title,
         Tutorial,
-        MainGame,
+        Action,
         Result
     }
 }
