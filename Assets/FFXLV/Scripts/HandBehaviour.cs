@@ -31,6 +31,7 @@ namespace FFXLV
         private float distance;
         private float coefficient;
         private float attackVelocity;
+        private float clearScore;
         private AngleScoreCalculator angleScoreCalculator;
         private DistanceScoreCalculator distanceScoreCalculator;
         private AudioSource audioSource;
@@ -42,7 +43,7 @@ namespace FFXLV
         private readonly float maxDistance = 1.5f;
         private readonly float maxDurableValue = 3;
 
-        public void Initialize(float bestAngle, float angularMagnitude, float bestDistance, float distanceMagnitude)
+        public void Initialize(float bestAngle, float angularMagnitude, float bestDistance, float distanceMagnitude, float clearScore)
         {
             Initialize();
             this.bestAngle = bestAngle;
@@ -55,6 +56,7 @@ namespace FFXLV
                 goodDistanceMargin, bestScore, goodScore, badScore);
             AngularMagnitude = angularMagnitude;
             DistanceMagnitude = distanceMagnitude;
+            this.clearScore = clearScore;
             DurableValue = 0;
             IsFailed = false;
             CurrentState = TransformState.None;
@@ -64,6 +66,11 @@ namespace FFXLV
         {
             angle = 0;
             distance = baseDistance;
+        }
+
+        public void Activate()
+        {
+            CurrentState = TransformState.Angle;
         }
 
         public override void Run(float deltaTime)
@@ -119,12 +126,13 @@ namespace FFXLV
                         IsCompleted = true;
                     }
 
-                    if (Score >= 200)
+                    if (Score >= clearScore)
                     {
                         IsCompleted = true;
                     }
                     else
                     {
+                        IsCompleted = false;
                         Count++;
                         ResetVariables();
                         CurrentState = TransformState.Angle;

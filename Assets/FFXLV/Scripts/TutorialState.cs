@@ -11,7 +11,7 @@ namespace FFXLV
 
         private State currentState;
         private bool isTransforming;
-        private readonly Vector3 arrivalPoint = new Vector3(0, 0, -15);
+        private readonly Vector3 arrivalPoint = new Vector3(1, 0.5f, -11);
 
         private enum State
         {
@@ -27,7 +27,7 @@ namespace FFXLV
             var bestDistance = Random.Range(2, 4);
             var angleMagnitude = 0.2f;
             var distanceMagnitude = 0.4f;
-            nextLayer.Initialize(bestAngle, angleMagnitude, bestDistance, distanceMagnitude);
+            nextLayer.Initialize(bestAngle, angleMagnitude, bestDistance, distanceMagnitude, Vector3.zero);
             currentState = State.Skip;
         }
 
@@ -60,6 +60,8 @@ namespace FFXLV
                     if (tutorialLayer.IsMoved)
                     {
                         currentState = State.Game;
+                        tutorialLayer.Initialize(45, 0.2f, 1, 0.4f);
+                        tutorialLayer.Activate();
                     }
 
                     break;

@@ -12,7 +12,7 @@ namespace FFXLV
         private LayerBehaviour currentLayer;
         private LayerBehaviour previousLayer;
         private bool isTransforming;
-        private readonly Vector3 arrivalPoint = new Vector3(0, 0, -15);
+        private readonly Vector3 arrivalPoint = new Vector3(1, 0, -11);
 
         private void NextLayer()
         {
@@ -45,7 +45,7 @@ namespace FFXLV
                 distanceMagnitude *= 5;
             }
 
-            previousLayer.Initialize(bestAngle, angleMagnitude, bestDistance, distanceMagnitude);
+            previousLayer.Initialize(bestAngle, angleMagnitude, bestDistance, distanceMagnitude, Vector3.zero);
             previousLayer.gameObject.SetActive(false);
             isTransforming = false;
         }
