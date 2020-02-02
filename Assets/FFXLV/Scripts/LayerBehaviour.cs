@@ -57,6 +57,12 @@ namespace FFXLV
             ChangeState(State.Normal);
         }
 
+        public void Deactivate()
+        {
+            handBehaviour.gameObject.SetActive(false);
+            ChangeState(State.None);
+        }
+
         public int GetScore()
         {
             return Mathf.Clamp(100 - 10 * Count, 0, 100);
@@ -65,6 +71,7 @@ namespace FFXLV
         public void Initialize(float bestAngle, float angularMagnitude, float bestDistance, float distanceMagnitude, Vector3 firstPosition)
         {
             Initialize();
+            handBehaviour.gameObject.SetActive(true);
             handBehaviour.Initialize(bestAngle, angularMagnitude, bestDistance, distanceMagnitude, 200);
             ChangeState(State.None);
             transform.position = firstPosition;

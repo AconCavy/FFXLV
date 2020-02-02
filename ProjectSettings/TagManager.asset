@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 4137445247
+    locked: 0
+  - name: Attacker
+    uniqueID: 2111481919
+    locked: 0
+  - name: RepairObject
+    uniqueID: 3665799693
+    locked: 0

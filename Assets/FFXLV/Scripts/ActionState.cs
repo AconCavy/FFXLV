@@ -18,35 +18,38 @@ namespace FFXLV
         {
             (currentLayer, previousLayer) = (previousLayer, currentLayer);
             isTransforming = true;
+            currentLayer.Activate();
         }
 
         private void TransformLayers(float deltaTime)
         {
             var currentLayerTransform = previousLayer.transform;
-            currentLayerTransform.position += (arrivalPoint - currentLayerTransform.position) * deltaTime;
+            var position = currentLayerTransform.position;
+            position += (arrivalPoint - position) * (5 * deltaTime);
+            currentLayerTransform.position = position;
             if (Vector3.Distance(currentLayerTransform.position, arrivalPoint) > 0.125f) return;
             var bestAngle = 45;
             var bestDistance = Random.Range(2, 4);
             var angleMagnitude = 0.2f;
-            var distanceMagnitude = 0.4f;
+            var distanceMagnitude = 1.6f;
             if (number > 5)
+            {
+                angleMagnitude *= 1.2f;
+                distanceMagnitude *= 1.2f;
+            }
+            else if (number > 10)
+            {
+                angleMagnitude *= 1.5f;
+                distanceMagnitude *= 1.5f;
+            }
+            else if (number > 15)
             {
                 angleMagnitude *= 2;
                 distanceMagnitude *= 2;
             }
-            else if (number > 10)
-            {
-                angleMagnitude *= 3;
-                distanceMagnitude *= 3;
-            }
-            else if (number > 15)
-            {
-                angleMagnitude *= 5;
-                distanceMagnitude *= 5;
-            }
 
             previousLayer.Initialize(bestAngle, angleMagnitude, bestDistance, distanceMagnitude, Vector3.zero);
-            previousLayer.gameObject.SetActive(false);
+            previousLayer.Deactivate();
             isTransforming = false;
         }
 
@@ -56,7 +59,11 @@ namespace FFXLV
             score = 0;
             number = 0;
             currentLayer = layer1;
+            currentLayer.Initialize(45, 0.2f, 3, 1.6f, Vector3.zero);
+            currentLayer.Activate();
             previousLayer = layer2;
+            previousLayer.Initialize(45, 0.2f, Random.Range(2, 4), 1.6f, Vector3.zero);
+            previousLayer.Deactivate();
         }
 
         public override void Run(float deltaTime)

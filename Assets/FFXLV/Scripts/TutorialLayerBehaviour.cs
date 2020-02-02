@@ -14,8 +14,10 @@ namespace FFXLV
             {
                 logo.SetActive(false);
             }
-            
-            transform.position += (firstPosition - transform.position) * deltaTime;
+
+            var position = transform.position;
+            position += (firstPosition - position) * (5 * deltaTime);
+            transform.position = position;
             if (Vector3.Distance(transform.position, firstPosition) > 0.125f) return;
             IsMoved = true;
         }

@@ -26,7 +26,8 @@ namespace FFXLV
             var bestAngle = 45;
             var bestDistance = Random.Range(2, 4);
             var angleMagnitude = 0.2f;
-            var distanceMagnitude = 0.4f;
+            var distanceMagnitude = 1.6f;
+            nextLayer.gameObject.SetActive(true);
             nextLayer.Initialize(bestAngle, angleMagnitude, bestDistance, distanceMagnitude, Vector3.zero);
             nextLayer.Activate();
             currentState = State.Skip;
@@ -35,7 +36,10 @@ namespace FFXLV
         private void TransformLayers(float deltaTime)
         {
             var tutorialLayerTransform = tutorialLayer.transform;
-            tutorialLayerTransform.position += (arrivalPoint - tutorialLayerTransform.position) * deltaTime;
+            var position = tutorialLayerTransform.position;
+            position += (arrivalPoint - position) * (5 * deltaTime);
+            tutorialLayerTransform.position = position;
+            
             if (Vector3.Distance(tutorialLayerTransform.position, arrivalPoint) > 0.125f) return;
             isTransforming = false;
             IsCompleted = true;
@@ -61,7 +65,7 @@ namespace FFXLV
                     if (tutorialLayer.IsMoved)
                     {
                         currentState = State.Game;
-                        tutorialLayer.Initialize(45, 0.2f, 1, 0.4f);
+                        tutorialLayer.Initialize(45, 0.2f, 1, 1.6f);
                         tutorialLayer.Activate();
                     }
 

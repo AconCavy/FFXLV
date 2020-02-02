@@ -30,6 +30,7 @@ namespace FFXLV
         private float angle;
         private float distance;
         private float coefficient;
+        private Vector3 attackVector;
         private float attackVelocity;
         private float clearScore;
         private AngleScoreCalculator angleScoreCalculator;
@@ -46,9 +47,11 @@ namespace FFXLV
         public void Initialize(float bestAngle, float angularMagnitude, float bestDistance, float distanceMagnitude, float clearScore)
         {
             Initialize();
+            ResetVariables();
+            Score = 0;
+            Count = 0;
             this.bestAngle = bestAngle;
             this.bestDistance = bestDistance;
-            ResetVariables();
             coefficient = 1;
             angleScoreCalculator = new AngleScoreCalculator(this.bestAngle, bestAngleMargin, goodAngleMargin, bestScore,
                 goodScore, badScore);
@@ -99,6 +102,7 @@ namespace FFXLV
                     distance += coefficient * DistanceMagnitude * deltaTime;
                     if (Input.GetKeyDown(KeyCode.Return))
                     {
+                        attackVector = transform.localPosition.normalized;
                         attackVelocity = transform.localPosition.magnitude;
                         CurrentState = TransformState.Attack;
                     }
@@ -112,14 +116,14 @@ namespace FFXLV
 
                     break;
                 case TransformState.Effect:
-                    var tmp = transform.localPosition;
-                    var angleScore = angleScoreCalculator.GetScore(tmp.normalized);
-                    var distanceScore = distanceScoreCalculator.GetScore(tmp.magnitude);
+                    var angleScore = angleScoreCalculator.GetScore(attackVector);
+                    var distanceScore = distanceScoreCalculator.GetScore(attackVelocity);
                     var clip = Math.Abs(angleScore - bestScore) < 1 ? bestSE :
-                        tmp.magnitude > bestDistance ? strongSE : weakSE;
+                        attackVelocity > bestDistance ? strongSE : weakSE;
                     audioSource.PlayOneShot(clip);
                     Score += angleScore + distanceScore;
-                    DurableValue += tmp.magnitude / baseDistance;
+                    Debug.Log(angleScore + ", " + distanceScore + ", " + Score);
+                    DurableValue += attackVelocity / baseDistance;
                     if (DurableValue >= maxDurableValue)
                     {
                         IsFailed = true;
