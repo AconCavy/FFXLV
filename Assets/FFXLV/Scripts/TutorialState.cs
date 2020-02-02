@@ -28,6 +28,7 @@ namespace FFXLV
             var angleMagnitude = 0.2f;
             var distanceMagnitude = 0.4f;
             nextLayer.Initialize(bestAngle, angleMagnitude, bestDistance, distanceMagnitude, Vector3.zero);
+            nextLayer.Activate();
             currentState = State.Skip;
         }
 
