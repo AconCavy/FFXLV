@@ -1,5 +1,6 @@
 ﻿using FFXLV.Enum;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace FFXLV
 {
@@ -41,6 +42,7 @@ namespace FFXLV
                     {
                         tutorialState.Skip();
                     }
+
                     tutorialState.Run(dt);
                     if (tutorialState.IsCompleted)
                     {
@@ -53,6 +55,7 @@ namespace FFXLV
                     actionState.Run(dt);
                     if (actionState.IsCompleted)
                     {
+                        resultState.Initialize(actionState.Number, (int) actionState.Score);
                         CurrentGameState = GameState.Result;
                     }
 
@@ -61,7 +64,7 @@ namespace FFXLV
                     resultState.Run(dt);
                     if (resultState.IsCompleted)
                     {
-                        CurrentGameState = GameState.Title;
+                        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                     }
 
                     break;

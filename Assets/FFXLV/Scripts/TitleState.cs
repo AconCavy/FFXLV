@@ -32,6 +32,7 @@ namespace FFXLV
 
         public void GameStart()
         {
+            audioSource.Stop();
             IsCompleted = true;
         }
     }

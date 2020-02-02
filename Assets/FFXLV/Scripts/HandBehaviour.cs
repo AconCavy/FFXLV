@@ -16,6 +16,7 @@ namespace FFXLV
         [SerializeField] private AudioClip bestSE;
         [SerializeField] private AudioClip strongSE;
         [SerializeField] private AudioClip weakSE;
+        [SerializeField] private EffectVisualizer effect;
 
         public bool IsFailed { get; private set; }
         public float AngularMagnitude { get; private set; } = 0.5f;
@@ -121,8 +122,9 @@ namespace FFXLV
                     var clip = Math.Abs(angleScore - bestScore) < 1 ? bestSE :
                         attackVelocity > bestDistance ? strongSE : weakSE;
                     audioSource.PlayOneShot(clip);
+                    effect.Initialize();
+                    effect.Play(1);
                     Score += angleScore + distanceScore;
-                    Debug.Log(angleScore + ", " + distanceScore + ", " + Score);
                     DurableValue += attackVelocity / baseDistance;
                     if (DurableValue >= maxDurableValue)
                     {

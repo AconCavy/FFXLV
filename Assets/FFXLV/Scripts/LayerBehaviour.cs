@@ -4,13 +4,16 @@ namespace FFXLV
 {
     public class LayerBehaviour : BaseState
     {
-        [SerializeField] protected GameObject normalStateObject;
-        [SerializeField] protected GameObject clearStateObject;
-        [SerializeField] protected GameObject failedStateObject;
         [SerializeField] protected HandBehaviour handBehaviour;
 
         public bool IsFailed { get; private set; }
         public int Count { get; private set; }
+        public LayerProvider LayerProvider { get; private set; }
+        protected GameObject normalStateObject;
+        protected GameObject clearStateObject;
+        protected GameObject failedStateObject;
+        protected GameObject stateObjectsParent;
+
         private State currentState;
 
         protected enum State
@@ -54,6 +57,7 @@ namespace FFXLV
         {
             handBehaviour.gameObject.SetActive(true);
             handBehaviour.Activate();
+            stateObjectsParent.SetActive(true);
             ChangeState(State.Normal);
         }
 
@@ -61,6 +65,7 @@ namespace FFXLV
         {
             handBehaviour.gameObject.SetActive(false);
             ChangeState(State.None);
+            stateObjectsParent.SetActive(false);
         }
 
         public int GetScore()
@@ -68,13 +73,29 @@ namespace FFXLV
             return Mathf.Clamp(100 - 10 * Count, 0, 100);
         }
 
-        public void Initialize(float bestAngle, float angularMagnitude, float bestDistance, float distanceMagnitude, Vector3 firstPosition)
+        public void Initialize(float bestAngle, float angularMagnitude, float bestDistance, float distanceMagnitude,
+            Vector3 firstPosition, LayerProvider layerProvider)
         {
             Initialize();
             handBehaviour.gameObject.SetActive(true);
             handBehaviour.Initialize(bestAngle, angularMagnitude, bestDistance, distanceMagnitude, 200);
+            LayerProvider = layerProvider;
+            stateObjectsParent = LayerProvider.gameObject;
+            stateObjectsParent.transform.SetParent(transform);
+            stateObjectsParent.transform.localPosition = Vector3.zero;
+            stateObjectsParent.transform.localRotation = Quaternion.identity;
+            normalStateObject = LayerProvider.NormalLayer;
+            clearStateObject = LayerProvider.ClearLayer;
+            failedStateObject = LayerProvider.FailedLayer;
+            handBehaviour.gameObject.SetActive(false);
             ChangeState(State.None);
             transform.position = firstPosition;
+        }
+
+        public void Finalize()
+        {
+            Deactivate();
+            stateObjectsParent.transform.SetParent(null);
         }
 
         public override void Run(float deltaTime)

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace FFXLV
 {
@@ -6,13 +8,16 @@ namespace FFXLV
     {
         [SerializeField] private LayerBehaviour layer1;
         [SerializeField] private LayerBehaviour layer2;
-
-        private float score;
-        private int number;
+        [SerializeField] private List<GameObject> prefabs;
+        
+        public float Score { get; private set; }
+        public int Number { get; private set; }
+        
         private LayerBehaviour currentLayer;
         private LayerBehaviour previousLayer;
         private bool isTransforming;
-        private readonly Vector3 arrivalPoint = new Vector3(1, 0, -11);
+        private List<LayerProvider> layerProviders;
+        private int previousIndex;
 
         private void NextLayer()
         {
@@ -25,6 +30,7 @@ namespace FFXLV
         {
             var currentLayerTransform = previousLayer.transform;
             var position = currentLayerTransform.position;
+            var arrivalPoint = -currentLayer.LayerProvider.DistanceVector + new Vector3(0, 0, -10);
             position += (arrivalPoint - position) * (5 * deltaTime);
             currentLayerTransform.position = position;
             if (Vector3.Distance(currentLayerTransform.position, arrivalPoint) > 0.125f) return;
@@ -32,37 +38,45 @@ namespace FFXLV
             var bestDistance = Random.Range(2, 4);
             var angleMagnitude = 0.2f;
             var distanceMagnitude = 1.6f;
-            if (number > 5)
+            if (Number > 5)
             {
                 angleMagnitude *= 1.2f;
                 distanceMagnitude *= 1.2f;
             }
-            else if (number > 10)
+            else if (Number > 10)
             {
                 angleMagnitude *= 1.5f;
                 distanceMagnitude *= 1.5f;
             }
-            else if (number > 15)
+            else if (Number > 15)
             {
                 angleMagnitude *= 2;
                 distanceMagnitude *= 2;
             }
 
-            previousLayer.Initialize(bestAngle, angleMagnitude, bestDistance, distanceMagnitude, Vector3.zero);
-            previousLayer.Deactivate();
+            var rand = Random.Range(0, layerProviders.Count);
+            previousLayer.Finalize();
+            previousLayer.Initialize(bestAngle, angleMagnitude, bestDistance, distanceMagnitude, Vector3.zero,
+                layerProviders[rand]);
             isTransforming = false;
         }
 
         public override void Initialize()
         {
             base.Initialize();
-            score = 0;
-            number = 0;
+            Score = 0;
+            Number = 0;
+            var index = 0;
+            do
+            {
+                index = Random.Range(0, layerProviders.Count);
+            } while (index == previousIndex);
+
+            previousIndex = index;
             currentLayer = layer1;
-            currentLayer.Initialize(45, 0.2f, 3, 1.6f, Vector3.zero);
             currentLayer.Activate();
             previousLayer = layer2;
-            previousLayer.Initialize(45, 0.2f, Random.Range(2, 4), 1.6f, Vector3.zero);
+            previousLayer.Initialize(45, 0.2f, Random.Range(2, 4), 1.6f, Vector3.zero, layerProviders[index]);
             previousLayer.Deactivate();
         }
 
@@ -82,9 +96,18 @@ namespace FFXLV
             }
             else
             {
-                number++;
-                score += currentLayer.GetScore();
+                Number++;
+                Score += currentLayer.GetScore();
                 NextLayer();
+            }
+        }
+
+        private void Start()
+        {
+            layerProviders = prefabs.Select(x => x.GetComponent<LayerProvider>()).ToList();
+            foreach (var prefab in prefabs)
+            {
+                prefab.SetActive(false);
             }
         }
     }

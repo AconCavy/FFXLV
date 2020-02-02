@@ -5,15 +5,14 @@ namespace FFXLV
     public class LayerProvider : MonoBehaviour
     {
 
-        [SerializeField]
-        GameObject _normalLayer;
-        [SerializeField]
-        GameObject _clearLayer;
-        [SerializeField]
-        GameObject _failedLayer;
+        [SerializeField] private GameObject normalLayer;
+        [SerializeField] private GameObject clearLayer;
+        [SerializeField] private GameObject failedLayer;
+        [SerializeField] private Vector3 distanceVector;
 
-        public GameObject NormalLayer { get { return _normalLayer; } }
-        public GameObject ClearLayer { get { return _clearLayer; } }
-        public GameObject FailedLayer { get { return _failedLayer; } }
+        public GameObject NormalLayer => normalLayer;
+        public GameObject ClearLayer => clearLayer;
+        public GameObject FailedLayer => failedLayer;
+        public Vector3 DistanceVector => distanceVector;
     }
 }

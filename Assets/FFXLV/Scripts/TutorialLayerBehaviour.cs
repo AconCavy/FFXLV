@@ -21,9 +21,16 @@ namespace FFXLV
             if (Vector3.Distance(transform.position, firstPosition) > 0.125f) return;
             IsMoved = true;
         }
-        public void Initialize(float bestAngle, float angularMagnitude, float bestDistance, float distanceMagnitude)
+        public void Initialize(float bestAngle, float angularMagnitude, float bestDistance, float distanceMagnitude, LayerProvider layerProvider)
         {
             Initialize();
+            stateObjectsParent = layerProvider.gameObject;
+            stateObjectsParent.transform.SetParent(transform);
+            stateObjectsParent.transform.localPosition = Vector3.zero;
+            stateObjectsParent.transform.localRotation = Quaternion.identity;
+            normalStateObject = layerProvider.NormalLayer;
+            clearStateObject = layerProvider.ClearLayer;
+            failedStateObject = layerProvider.FailedLayer;
             ChangeState(State.None);
             transform.position = firstPosition;
             handBehaviour.Initialize(bestAngle, angularMagnitude, bestDistance, distanceMagnitude, 50);

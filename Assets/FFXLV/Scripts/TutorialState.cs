@@ -5,12 +5,13 @@ namespace FFXLV
     public class TutorialState : BaseState
     {
         [SerializeField] private TutorialLayerBehaviour tutorialLayer;
+        [SerializeField] private LayerProvider tutorialLayerProvider;
+        [SerializeField] private LayerProvider nextLayerProvider;
         [SerializeField] private LayerBehaviour nextLayer;
         [SerializeField] private AudioSource audioSource;
         [SerializeField] private AudioClip gameBGM;
 
         private State currentState;
-        private bool isTransforming;
         private readonly Vector3 arrivalPoint = new Vector3(1, 0.5f, -11);
 
         private enum State
@@ -28,7 +29,8 @@ namespace FFXLV
             var angleMagnitude = 0.2f;
             var distanceMagnitude = 1.6f;
             nextLayer.gameObject.SetActive(true);
-            nextLayer.Initialize(bestAngle, angleMagnitude, bestDistance, distanceMagnitude, Vector3.zero);
+            nextLayer.Initialize(bestAngle, angleMagnitude, bestDistance, distanceMagnitude, Vector3.zero,
+                nextLayerProvider);
             nextLayer.Activate();
             currentState = State.Skip;
         }
@@ -39,9 +41,8 @@ namespace FFXLV
             var position = tutorialLayerTransform.position;
             position += (arrivalPoint - position) * (5 * deltaTime);
             tutorialLayerTransform.position = position;
-            
+
             if (Vector3.Distance(tutorialLayerTransform.position, arrivalPoint) > 0.125f) return;
-            isTransforming = false;
             IsCompleted = true;
         }
 
@@ -52,7 +53,6 @@ namespace FFXLV
             audioSource.clip = gameBGM;
             audioSource.loop = true;
             audioSource.Play();
-            isTransforming = false;
         }
 
         public override void Run(float deltaTime)
@@ -65,7 +65,7 @@ namespace FFXLV
                     if (tutorialLayer.IsMoved)
                     {
                         currentState = State.Game;
-                        tutorialLayer.Initialize(45, 0.2f, 1, 1.6f);
+                        tutorialLayer.Initialize(45, 0.2f, 1, 1.6f, tutorialLayerProvider);
                         tutorialLayer.Activate();
                     }
 
